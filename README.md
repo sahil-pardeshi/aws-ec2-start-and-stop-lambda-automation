@@ -1,6 +1,10 @@
 # aws-ec2-start-and-stop-lambda-automation
 This project focuses on the lambda automation which automates the start and stop operation of AWS- EC2
-Prerequisites: AWS Account, Python 3.11
+Prerequisites: 
+<br>
+AWS Account
+<br>
+Python 3.11
 
 ## Step-by-Step Implementation Guide
 
