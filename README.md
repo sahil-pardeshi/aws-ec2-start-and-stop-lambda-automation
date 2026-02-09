@@ -5,9 +5,8 @@ Prerequisites:
 <br>
  - AWS Account
 <br>
-
 ## Step-by-Step Implementation Guide
-
+<br>
 Step 1: Tag Your EC2 Instances
 For the script to find your instances, they must have a specific "label."
  1 Open the EC2 Console.
