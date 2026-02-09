@@ -9,6 +9,7 @@ Prerequisites:
 <br>
 Step 1: Tag Your EC2 Instances
 For the script to find your instances, they must have a specific "label."
+<br>
  1 Open the EC2 Console.
  <br>
  2 Select the instances you want to automate.
