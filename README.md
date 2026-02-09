@@ -58,7 +58,36 @@ Step 3: Create the Lambda Function
  1 Go to AWS Lambda -> Create Function.
  2 Runtime: Python 3.x.
  3 Permissions: Select the IAM role you just created.
- 4 Paste the Automated Tag-Based Script we discussed into the lambda_function.py editor.
+ 4 Paste the Automated Tag-Based Script below into the lambda_function.py editor.
+   ###Lambda Function Setup
+  Create a function using Python 3.12 and paste the following code:
+  ```
+   import boto3
+
+def lambda_handler(event, context):
+    ec2 = boto3.client('ec2')
+    
+    # Filter for instances with the specific tag
+    filters = [{'Name': 'tag:Auto-Scheduler', 'Values': ['True']}]
+    
+    # Discovery: Find the IDs of the tagged instances
+    response = ec2.describe_instances(Filters=filters)
+    instance_ids = [i['InstanceId'] for r in response['Reservations'] for i in r['Instances']]
+
+    if not instance_ids:
+        print("No tagged instances found.")
+        return
+
+    # Action: Determine whether to Start or Stop
+    action = event.get('action')
+    if action == 'start':
+        ec2.start_instances(InstanceIds=instance_ids)
+    elif action == 'stop':
+        ec2.stop_instances(InstanceIds=instance_ids)
+        
+    print(f"Successfully executed {action} for: {instance_ids}")
+```
+
  5 Click Deploy.
 
 Step 4: Automate with EventBridge (The Scheduler)
@@ -67,3 +96,13 @@ Step 4: Automate with EventBridge (The Scheduler)
  3 Target: Select your Lambda function.
  4 Input: Under "Constant JSON," enter: `{"action": "stop"}`.
  5 Repeat for a "Start" schedule with the input: `{"action": "start"}`.
+
+Step 5 Testing.
+ 1 Navigate to the Test tab in your Lambda function.
+ 2 Create a new test event with:
+   ` { "action": "stop" } `
+ 3 Execute the test and verify the Execution Result and CloudWatch Logs.
+
+ ### Advantage of this automation 
+   Cost Benefits:
+     By stopping a single t3.medium instance for 12 hours daily, you can save approximately 50% on that resource's monthly compute costs.
