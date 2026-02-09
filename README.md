@@ -1,5 +1,6 @@
 # aws-ec2-start-and-stop-lambda-automation
 This project focuses on the lambda automation which automates the start and stop operation of AWS- EC2
+<br>
 Prerequisites: 
 <br>
 AWS Account
@@ -11,25 +12,29 @@ Python 3.11
 Step 1: Tag Your EC2 Instances
 For the script to find your instances, they must have a specific "label."
  1 Open the EC2 Console.
- <br><br>
+ <br>
  2 Select the instances you want to automate.
- <br><br>
+ <br>
  3 Go to Tags -> Manage Tags.
- <br><br>
+ <br>
    Add a new tag:
-   <br><br>
+   <br>
    - Key: Auto-Scheduler
-     <br><br>
+     <br>
    - Value: True
-   <br><br>
+   <br>
    Click Save.
 
 Step 2: Create the IAM Execution Role
+<br>
 Lambda needs permission to "talk" to your EC2 instances.
+<br>
  1 Go to the IAM Console -> Roles -> Create Role.
+ <br>
  2 Select Lambda as the trusted entity.
+ <br>
  3 Click Create Policy and paste this JSON in the JSON tab:
-
+<br>
 ### Configure the IAM Policy
 Copy the following JSON and save it as `iam_policy.json` to give Lambda the required permissions:
 
@@ -63,13 +68,19 @@ Copy the following JSON and save it as `iam_policy.json` to give Lambda the requ
 }
 ```
  4 Name the policy `EC2StartStopPolicy` and attach it to your role.
-
+<br>
 Step 3: Create the Lambda Function
+<br>
  1 Go to AWS Lambda -> Create Function.
- 2 Runtime: Python 3.x.
+ <br>
+ 2 Runtime: Python 3.12.
+ <br>
  3 Permissions: Select the IAM role you just created.
+ <br>
  4 Paste the Automated Tag-Based Script below into the lambda_function.py editor.
+ <br>
    ###Lambda Function Setup
+   <br>
   Create a function using Python 3.12 and paste the following code:
   ```
    import boto3
@@ -99,20 +110,33 @@ def lambda_handler(event, context):
 ```
 
  5 Click Deploy.
-
+<br>
 Step 4: Automate with EventBridge (The Scheduler)
+<br>
  1 Go to Amazon EventBridge -> Schedules.
+ <br>
  2 Create a "Stop" schedule (e.g., 8 PM Daily).
+ <br>
  3 Target: Select your Lambda function.
+ <br>
  4 Input: Under "Constant JSON," enter: `{"action": "stop"}`.
+ <br>
  5 Repeat for a "Start" schedule with the input: `{"action": "start"}`.
+ <br>
 
 Step 5 Testing.
+<br>
  1 Navigate to the Test tab in your Lambda function.
+ <br>
  2 Create a new test event with:
+ <br>
    ` { "action": "stop" } `
+   <br>
  3 Execute the test and verify the Execution Result and CloudWatch Logs.
-
+<br>
  ### Advantage of this automation 
+ <br>
    Cost Benefits:
+   <br>
      By stopping a single t3.medium instance for 12 hours daily, you can save approximately 50% on that resource's monthly compute costs.
+     <br>
