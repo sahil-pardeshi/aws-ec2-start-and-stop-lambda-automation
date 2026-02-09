@@ -3,9 +3,8 @@ This project focuses on the lambda automation which automates the start and stop
 <br>
 Prerequisites: 
 <br>
-AWS Account
+ - AWS Account
 <br>
-Python 3.11
 
 ## Step-by-Step Implementation Guide
 
