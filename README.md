@@ -7,11 +7,17 @@ Prerequisites: AWS Account, Python 3.11
 Step 1: Tag Your EC2 Instances
 For the script to find your instances, they must have a specific "label."
  1 Open the EC2 Console.
+ <br><br>
  2 Select the instances you want to automate.
+ <br><br>
  3 Go to Tags -> Manage Tags.
+ <br><br>
    Add a new tag:
+   <br><br>
    - Key: Auto-Scheduler
+     <br><br>
    - Value: True
+   <br><br>
    Click Save.
 
 Step 2: Create the IAM Execution Role
